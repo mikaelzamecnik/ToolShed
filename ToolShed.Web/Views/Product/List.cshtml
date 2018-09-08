@@ -1,0 +1,9 @@
+﻿@model IEnumerable<Product>
+
+
+@foreach(var p in Model)
+{
+
+<strong>@p.Name - </strong> @($"Pris: {p.Price:C2}") <br />
+}
+

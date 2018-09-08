@@ -1,0 +1,31 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio 15
+VisualStudioVersion = 15.0.28010.2016
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ToolShed.Web", "ToolShed.Web\ToolShed.Web.csproj", "{42577EFB-F4BB-4715-A61E-E768667A6640}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ToolShed.Tests", "ToolShed.Tests\ToolShed.Tests.csproj", "{12A874C0-C5CB-4C19-B192-34BB3AF5F4F9}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{42577EFB-F4BB-4715-A61E-E768667A6640}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{42577EFB-F4BB-4715-A61E-E768667A6640}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{42577EFB-F4BB-4715-A61E-E768667A6640}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{42577EFB-F4BB-4715-A61E-E768667A6640}.Release|Any CPU.Build.0 = Release|Any CPU
+		{12A874C0-C5CB-4C19-B192-34BB3AF5F4F9}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{12A874C0-C5CB-4C19-B192-34BB3AF5F4F9}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{12A874C0-C5CB-4C19-B192-34BB3AF5F4F9}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{12A874C0-C5CB-4C19-B192-34BB3AF5F4F9}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {84723825-BC82-4CF8-A337-5D6941C1DC5D}
+	EndGlobalSection
+EndGlobal

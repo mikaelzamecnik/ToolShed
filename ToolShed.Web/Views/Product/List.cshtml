@@ -1,9 +1,19 @@
-﻿@model IEnumerable<Product>
+﻿@model ProductListViewModel
 
-
-@foreach(var p in Model)
+@foreach(var p in Model.Products)
 {
-
-<strong>@p.Name - </strong> @($"Pris: {p.Price:C2}") <br />
+<partial name="ProductBlock" model="p"/>
 }
+
+<hr />
+
+<div class="float-right">
+    <div page-model="@Model.Pager" page-action="List"
+         enable-page-classes="true"
+         page-class="btn"
+         page-class-normal="btn-default"
+         page-class-selected="btn-primary"
+         class="btn-group">
+    </div>
+</div>
 

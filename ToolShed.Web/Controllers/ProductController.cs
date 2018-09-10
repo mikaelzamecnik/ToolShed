@@ -4,6 +4,7 @@ using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
 using ToolShed.Web.Repositories;
+using ToolShed.Web.ViewModels;
 
 namespace ToolShed.Web.Controllers
 {
@@ -22,8 +23,10 @@ namespace ToolShed.Web.Controllers
         {
             var toSkip = (page - 1) * PageLimit;
             var products = repo.Products.OrderBy(x => x.Id).Skip(toSkip).Take(PageLimit);
+            var paging = new PagingInfo { CurrentPage = page, ItemsPerPage = PageLimit, TotalItems = repo.Products.Count() };
+            var vm = new ProductListViewModel { Products = products, Pager = paging };
 
-            return View(products);
+            return View("~/Views/Product/List.cshtml", vm);
         }
 
 

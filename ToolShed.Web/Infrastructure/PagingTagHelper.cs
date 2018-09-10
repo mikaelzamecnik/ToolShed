@@ -30,6 +30,12 @@ namespace ToolShed.Web.Infrastructure
 
         public string PageAction { get; set; }
 
+        public bool EnablePageClasses { get; set; } = false;
+        public string PageClass { get; set; }
+        public string PageClassNormal { get; set; }
+        public string PageClassSelected  { get; set; }
+
+
         public override void Process(TagHelperContext context, TagHelperOutput output)
         {
             IUrlHelper urlHelper = _helper.GetUrlHelper(ViewContext);
@@ -40,7 +46,14 @@ namespace ToolShed.Web.Infrastructure
                 TagBuilder tag = new TagBuilder("a");
                 tag.Attributes["href"] = urlHelper.Action(PageAction,
                     new { page = i });
-                tag.InnerHtml.AppendHtml(tag);
+                if (EnablePageClasses)
+                {
+                    tag.AddCssClass(PageClass);
+                    tag.AddCssClass(i == PageModel.CurrentPage ? PageClassSelected : PageClassNormal);
+                }
+
+                tag.InnerHtml.AppendHtml(i.ToString());
+                result.InnerHtml.AppendHtml(tag);
             }
 
             output.Content.AppendHtml(result.InnerHtml);

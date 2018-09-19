@@ -9,14 +9,14 @@ using ToolShed.Web.DataAccess;
 namespace ToolShed.Web.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    [Migration("20180907115930_Init")]
-    partial class Init
+    [Migration("20180919084849_newone")]
+    partial class newone
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
-                .HasAnnotation("ProductVersion", "2.1.2-rtm-30932")
+                .HasAnnotation("ProductVersion", "2.1.3-rtm-32065")
                 .HasAnnotation("Relational:MaxIdentifierLength", 128)
                 .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 

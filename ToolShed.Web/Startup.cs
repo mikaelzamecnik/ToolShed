@@ -48,7 +48,7 @@ namespace ToolShed.Web
                 app.UseStatusCodePages();
             }
 
-
+            //app.UseAuthentication();
             app.UseStaticFiles();
             app.UseMvc(routes =>
             {

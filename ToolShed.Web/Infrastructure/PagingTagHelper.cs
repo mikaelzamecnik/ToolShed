@@ -38,6 +38,7 @@ namespace ToolShed.Web.Infrastructure
 
         public override void Process(TagHelperContext context, TagHelperOutput output)
         {
+            if (PageModel.TotalPages == 1) return;
             IUrlHelper urlHelper = _helper.GetUrlHelper(ViewContext);
             TagBuilder result = new TagBuilder("div");
             for(int i= 1; i <= PageModel.TotalPages; i++)

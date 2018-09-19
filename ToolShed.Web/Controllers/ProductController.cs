@@ -21,16 +21,32 @@ namespace ToolShed.Web.Controllers
 
         public IActionResult List(string selectedCategory, int page = 1)
         {
-            var ps = repo.Products.ToList();
+            int categoryId = 0;
+            if (!string.IsNullOrEmpty(selectedCategory))
+            {
+                var cat = repo.Categories.FirstOrDefault(c => c.Name.Equals(selectedCategory));
+                if (cat != null) categoryId = cat.Id;
+            }
+
+            //var ps = repo.Products.ToList();
 
             var toSkip = (page - 1) * PageLimit;
             var products = repo.Products
-                .Where(p=> selectedCategory == null || p.Category.Name.Equals(selectedCategory, StringComparison.InvariantCultureIgnoreCase ))
+                //.Where(p=> selectedCategory == null || p.Category.Name.Equals(selectedCategory, StringComparison.InvariantCultureIgnoreCase ))
+                .Where(p => categoryId == 0 || p.CategoryId.Equals(categoryId))
                 .OrderBy(x => x.Id)
                 .Skip(toSkip)
                 .Take(PageLimit);
-            var paging = new PagingInfo { CurrentPage = page, ItemsPerPage = PageLimit, TotalItems = repo.Products.Count() };
-            var vm = new ProductListViewModel {
+
+            var paging = new PagingInfo
+            {
+                CurrentPage = page,
+                ItemsPerPage = PageLimit,
+                TotalItems = selectedCategory == null ? repo.Products.Count() : repo.Products.Where(p => p.CategoryId == categoryId).Count()
+            };
+
+            var vm = new ProductListViewModel
+            {
                 Products = products,
                 Pager = paging,
                 SelectedCategory = selectedCategory

@@ -52,17 +52,34 @@ namespace ToolShed.Web
             app.UseStaticFiles();
             app.UseMvc(routes =>
             {
-
                 routes.MapRoute(
 
-                   name: "pagination",
-                   template: "products/page/{page}",
+                   name: null,
+                   template: "produkter/{selectedCategory}/sida/{page:int}",
                    defaults: new { Controller = "Product", action = "List" });
 
                 routes.MapRoute(
 
-                    name: "default",
-                    template: "{controller=Product}/{action=List}/{id=}");
+                   name: null,
+                   template: "produkter/sida/{page:int}",
+                   defaults: new { Controller = "Product", action = "List", page =1 });
+
+                routes.MapRoute(
+
+                   name: null,
+                   template: "produkter/{selectedCategory}",
+                   defaults: new { Controller = "Product", action = "List", page = 1 });
+
+                routes.MapRoute(
+
+                   name: null,
+                   template: "",
+                   defaults: new { Controller = "Product", action = "List", page = 1 });
+
+                routes.MapRoute(
+
+                    name: null,
+                    template: "{controller}/{action}/{id?}");
 
 
 

@@ -17,6 +17,7 @@ namespace ToolShed.Web.Repositories
         }
 
         public IEnumerable<Product> Products => ctx.Products;
+        public IEnumerable<Category> Categories => ctx.Categories;
 
     }
 }

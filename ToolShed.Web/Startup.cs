@@ -5,6 +5,7 @@ using System.Threading.Tasks;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Http;
+using Microsoft.AspNetCore.Routing;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
@@ -23,10 +24,15 @@ namespace ToolShed.Web
         {
             _configuration = conf;
         }
-       
+
+
+
         public void ConfigureServices(IServiceCollection services)
         {
             var conn = _configuration.GetConnectionString("ToolShedProducts");
+
+            // Change the format of the routing Urls
+            services.Configure<RouteOptions>(options => options.LowercaseUrls = true);
 
             services.AddDbContext<ApplicationDbContext>(options => options.UseSqlServer(conn));
             services.AddTransient<IProductRepository, ProductRepository>();
@@ -58,13 +64,15 @@ namespace ToolShed.Web
                     name: "default",
                     template: "{controller=Product}/{action=List}/{id=}");
 
-               
+
 
             });
 
+
+
             Seed.FillIfEmpty(ctx);
 
-           
+
         }
     }
 }

@@ -9,6 +9,7 @@ namespace ToolShed.Web.Repositories
     public interface IProductRepository
     {
         IEnumerable<Product> Products { get; }
+        IEnumerable<Category> Categories { get; }
 
     }
 }

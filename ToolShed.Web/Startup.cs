@@ -10,6 +10,7 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using ToolShed.Web.DataAccess;
+using ToolShed.Web.Models;
 using ToolShed.Web.Repositories;
 
 namespace ToolShed.Web
@@ -33,6 +34,9 @@ namespace ToolShed.Web
 
             // Change the format of the routing Urls
             services.Configure<RouteOptions>(options => options.LowercaseUrls = true);
+
+            services.AddScoped(f => CartSession.GetCart(f));
+            services.AddSingleton<IHttpContextAccessor, HttpContextAccessor>();
 
             services.AddDbContext<ApplicationDbContext>(options => options.UseSqlServer(conn));
             services.AddTransient<IProductRepository, ProductRepository>();

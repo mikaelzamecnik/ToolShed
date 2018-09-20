@@ -5,7 +5,7 @@ using System.Linq;
 using System.Threading.Tasks;
 using ToolShed.Web.Repositories;
 
-namespace ToolShed.Web.ViewModels
+namespace ToolShed.Web.ViewComponents
 {
     public class CategoryNavigationViewComponent: ViewComponent
     {

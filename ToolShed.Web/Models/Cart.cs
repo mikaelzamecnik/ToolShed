@@ -7,6 +7,8 @@ namespace ToolShed.Web.Models
 {
     public class Cart
     {
+        internal const string customerCartKey = "customer_cart";
+
         private List<CartRow> _cartRows = new List<CartRow>();
 
         public virtual void AddProduct(Product p, int quantity)

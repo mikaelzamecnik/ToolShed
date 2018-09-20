@@ -14,18 +14,19 @@ namespace ToolShed.Web.Controllers
     {
 
         private IProductRepository repo;
-        private const string customerCartKey = "customer_cart";
+        private Cart cart;
 
-        public CartController(IProductRepository repository)
+        public CartController(IProductRepository repository, Cart cartService)
         {
             repo = repository;
+            cart = cartService;
         }
 
         public IActionResult Index(string returnUrl)
         {
             var vm = new CartViewModel
             {
-                Cart = GetCustomerCart(),
+                Cart = cart,
                 ReturnUrl = returnUrl
             };
             return View(vm);
@@ -36,23 +37,24 @@ namespace ToolShed.Web.Controllers
             var p = repo.Products.FirstOrDefault(x => x.Id.Equals(id));
             if(p != null)
             {
-                var cart = GetCustomerCart();
+                
                 cart.AddProduct(p, 1);
-                SaveCustomerCart(cart);
+                
             }
 
-            return RedirectToAction("Index", new { returnUrl });
+            return RedirectToAction(nameof(Index), new {returnUrl });
         }
 
-        private void SaveCustomerCart(Cart cart)
+        public RedirectToActionResult RemoveFromCart(int id, string returnUrl)
         {
-            HttpContext.Session.SetJson(customerCartKey, cart);
-        }
 
-        private Cart GetCustomerCart()
-        {
-            Cart cart = HttpContext.Session.GetJson<Cart>(customerCartKey) ?? new Cart();
-            return cart;
+            var p = repo.Products.FirstOrDefault(x => x.Id.Equals(id));
+            if(p != null)
+            {
+                cart.RemoveCartRow(p);
+            }
+            return RedirectToAction(nameof(Index), new { returnUrl });
+
         }
     }
 }

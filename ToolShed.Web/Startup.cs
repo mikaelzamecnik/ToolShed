@@ -32,7 +32,7 @@ namespace ToolShed.Web
             var conn = _configuration.GetConnectionString("ToolShedProducts");
 
             // Change the format of the routing Urls
-            services.Configure<RouteOptions>(options => options.LowercaseUrls = true); 
+            services.Configure<RouteOptions>(options => options.LowercaseUrls = true);
 
             services.AddDbContext<ApplicationDbContext>(options => options.UseSqlServer(conn));
             services.AddTransient<IProductRepository, ProductRepository>();

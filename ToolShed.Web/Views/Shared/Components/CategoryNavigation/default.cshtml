@@ -1,0 +1,21 @@
+﻿@model IEnumerable<string>
+
+<ul class="nav nav-pills nav-fill">
+    <li class="@(ViewBag.SelectedCategory == null ? "nav-link active" : "")">
+
+        <a asp-action="List"
+           asp-controller="Product" 
+           asp-route-selectedCategory="">
+            Alla produkter
+        </a> 
+        </li>
+    @foreach (var cat in Model)
+    {
+        <li class="@(cat.Equals(ViewBag.SelectedCategory, StringComparison.InvariantCultureIgnoreCase) ? "nav-link active": "")">
+            <a asp-controller="Product"
+               asp-action="List"
+               asp-route-selectedCategory="@cat"
+               asp-route-page="1">@cat</a>
+        </li>
+    }
+</ul>

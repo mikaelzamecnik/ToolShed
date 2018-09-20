@@ -32,10 +32,23 @@ namespace ToolShed.Web
             var conn = _configuration.GetConnectionString("ToolShedProducts");
 
             // Change the format of the routing Urls
-            services.Configure<RouteOptions>(options => options.LowercaseUrls = true);
+            services.Configure<RouteOptions>(options => options.LowercaseUrls = true); 
 
             services.AddDbContext<ApplicationDbContext>(options => options.UseSqlServer(conn));
             services.AddTransient<IProductRepository, ProductRepository>();
+
+            // To add to session
+            services.AddMemoryCache();
+            services.AddSession(options =>
+            {
+                options.Cookie.Name = ".ToolShed.Cart.Session";
+                options.IdleTimeout = TimeSpan.FromDays(2);
+
+            });
+
+
+
+            // Make Core App work with Mvc
             services.AddMvc();
 
         }
@@ -50,6 +63,9 @@ namespace ToolShed.Web
 
             //app.UseAuthentication();
             app.UseStaticFiles();
+            //Use session
+            app.UseSession();
+
             app.UseMvc(routes =>
             {
                 routes.MapRoute(

@@ -8,10 +8,19 @@
     <link href="~/lib/bootstrap/dist/css/bootstrap.min.css" rel="stylesheet" />
 </head>
 <body>
-    <div>
-        @RenderBody()
+    <div class="container">
+        <div class="row">
+            <div class="col-md-2">
+                @await Component.InvokeAsync("CategoryNavigation")
+            </div>
+            <div class="col-md-10">
+                @RenderBody()
+            </div>
+        </div>
     </div>
-    <script src="~/lib/jquery/jquery.min.js"></script>
+
     <script src="~/lib/bootstrap/dist/js/bootstrap.min.js"></script>
+    <script src="~/lib/jquery/jquery.min.js"></script>
+
 </body>
 </html>

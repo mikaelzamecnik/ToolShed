@@ -1,0 +1,39 @@
+﻿@model CartViewModel
+<h2>Kundvagn</h2>
+<table class="table table-bordered table-striped">
+    <thead>
+        <tr>
+            <th>Antal</th>
+            <th>Produkt</th>
+            <th class="text-right">Styckpris</th>
+            <th class="text-right">Radtotal</th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach(var r in Model.Cart.CartRows)
+        {
+            <tr>
+                <td class="text-center">@r.Quantity</td>
+                <td class="text-left">@r.Product.Name</td>
+                <td class="text-right">@r.Product.Price.ToString("c")</td>
+                <td class="text-right">
+                    @((r.Quantity * r.Product.Price).ToString("c"))
+                </td>
+
+            </tr>
+        }
+    </tbody>
+    <tfoot>
+        <tr>
+            <td colspan="3" class="text-right"><strong>TotalSumma:</strong></td>
+            <td class="text-right">
+                <strong>
+                    @Model.Cart.GetCartTotal().ToString("c")
+                </strong>
+            </td>
+        </tr>
+    </tfoot>
+</table>
+<div class="float-right">
+    <a class="btn btn-primary" href="@Model.ReturnUrl">Forsätt Handla</a>
+</div>

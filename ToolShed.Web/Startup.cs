@@ -51,7 +51,8 @@ namespace ToolShed.Web
             });
 
 
-
+            // Adding OrderRepository
+            services.AddTransient<IOrderRepository, OrderRepository>();
             // Make Core App work with Mvc
             services.AddMvc();
 

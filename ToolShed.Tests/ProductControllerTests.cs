@@ -29,7 +29,7 @@ namespace ToolShed.Tests
             //pc.PageLimit = 3;
 
             ////Act
-            //var products = (pc.List(2) as ViewResult)?.ViewData.Model as IEnumerable<Product>;
+            //var products = (pc.List(1) as ViewResult)?.ViewData.Model as IEnumerable<Product>;
 
             ////Assert
             //var prodArray = products.ToArray();

@@ -1,26 +1,26 @@
 ﻿@model Product
 
-<div class="card">
-    <div class="card-body">
+<div class="panel panel-default">
+    <div class="panel-body">
         <div class="row">
             <div class="col-md-6">
-                <div>
-                    <h2>@Model.Name</h2>
-                    <p>@Model.Description</p>
-                    <strong>@($"Pris: {Model.Price:C2}")</strong>
-                    <form asp-action="AddToCart" asp-controller="Cart"
-                        method="post" class="add-to-cart">
-                        <input type="hidden" asp-for="Id"/>
-                        <input type="hidden" name="returnUrl" value="@ViewContext.HttpContext.Request.PathAndQueryString()"/>
-                        <button type="submit" class="btn btn-success">
-                            Köp
-                        </button>
-                    </form>
-                </div>
+
+                <h2>@Model.Name</h2>
+                <p>@Model.Description</p>
+                <strong>@($"Pris: {Model.Price:C2}")</strong>
+                <form asp-action="AddToCart" asp-controller="Cart"
+                      method="post" class="add-to-cart">
+                    <input type="hidden" asp-for="Id" />
+                    <input type="hidden" name="returnUrl" value="@ViewContext.HttpContext.Request.PathAndQueryString()" />
+                    <button type="submit" class="btn btn-success">
+                        <i class="glyphicon glyphicon-shopping-cart"></i>Köp
+                    </button>
+                </form>
+            </div>
                
                 <div class="col-md-6">
-                    <img src="http://via.placeholder.com/150x150" class="float-right" />
-                </div>
+                    <img src="http://via.placeholder.com/150x150" class="pull-right" />
+                
             </div>
         </div>
     </div>

@@ -11,5 +11,9 @@ namespace ToolShed.Web.Repositories
         IEnumerable<Product> Products { get; }
         IEnumerable<Category> Categories { get; }
 
+        void SaveProduct(Product p);
+        Product DeleteProduct(int productId);
+
+
     }
 }

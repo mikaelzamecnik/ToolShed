@@ -1,9 +1,11 @@
 ﻿using Microsoft.AspNetCore.Http;
+using Microsoft.AspNetCore.Mvc.Rendering;
 using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using ToolShed.Web.Models;
 
 namespace ToolShed.Web.Infrastructure
 {
@@ -32,6 +34,21 @@ namespace ToolShed.Web.Infrastructure
             if (sessionData == null) return default(T);
 
             return JsonConvert.DeserializeObject<T>(sessionData);
+        }
+
+        public static List<SelectListItem> ToSelectList(this IEnumerable<Category> categories, Product p = null)
+        {
+            var list = categories.Select(
+                x => new SelectListItem
+                {
+                    Text = x.Name,
+                    Value = x.Id.ToString(),
+                    Selected = (x.Id == p?.CategoryId)
+
+                }).ToList();
+            return list;
+                
+
         }
 
 

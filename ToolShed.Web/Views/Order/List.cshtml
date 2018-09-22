@@ -1,0 +1,47 @@
+﻿@model IEnumerable<Order>
+
+@{
+    Layout = "_Admin";
+}
+
+<h2>Orderhantering!</h2>
+
+@if (Model.Any())
+{
+
+    <table class="table table-bordered table-striped">
+        <tr><th>Name</th><th>Postnummer/Stad</th><th colspan="2">Detaljer</th><th></th></tr>
+        @foreach (var o in Model)
+        {
+            <tr>
+                <td>@o.FirstName @o.LastName</td>
+                <td>@o.PostalCode/@o.City</td>
+                <th>Produkt</th>
+                <th>Antal</th>
+                <td>
+                    <form asp-action="MarkAsShipped" method="post">
+                        <input type="hidden" name="orderId" value="@o.Id"/>
+                        <button type="submit" class="btn btn-sm btn-danger">
+                            Markera som skickad
+                        </button>
+                    </form>
+                </td>
+            </tr>
+            @foreach (var row in o.Rows)
+            {
+                <tr>
+                    <td colspan="2"></td>
+                    <td>@row.Product.Name</td>
+                    <td>@row.Quantity</td>
+                    <td></td>
+                </tr>
+            }
+
+        }
+    </table>
+}
+else
+{
+
+<div class="text-center"><strong>Inga ickelevererade ordrar.</strong></div>
+}

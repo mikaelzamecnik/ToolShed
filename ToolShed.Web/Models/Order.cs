@@ -13,6 +13,10 @@ namespace ToolShed.Web.Models
         public int Id { get; set; }
         [BindNever]
         public ICollection<CartRow> Rows { get; set; }
+
+        [BindNever]
+        public bool Shipped { get; set; }
+
         [Required(ErrorMessage ="Vänligen ange förnamn")]
         public string FirstName { get; set; }
         [Required(ErrorMessage = "Vänligen ange efternamn")]

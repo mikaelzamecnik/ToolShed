@@ -51,5 +51,25 @@ namespace ToolShed.Web.Controllers
             cart.EmptyCart();
             return View();
         }
+        public IActionResult List()
+        {
+            return View(orderRepo.Orders.Where(x => !x.Shipped));
+        }
+
+        [HttpPost]
+        public IActionResult MarkAsShipped(int orderId)
+        {
+            Order order = orderRepo.Orders.FirstOrDefault(x => x.Id == orderId);
+            if(order != null)
+            {
+                order.Shipped = true;
+                orderRepo.SaveOrder(order);
+
+            }
+            return RedirectToAction(nameof(List));
+
+        }
+
+
     }
 }

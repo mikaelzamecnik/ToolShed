@@ -5,6 +5,7 @@ using System.Threading.Tasks;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Http;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Routing;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
@@ -19,19 +20,19 @@ namespace ToolShed.Web
     {
 
 
-        IConfiguration _configuration;
+        IConfiguration Configuration;
 
         public Startup(IConfiguration conf)
         {
-            _configuration = conf;
+            Configuration = conf;
         }
 
 
 
         public void ConfigureServices(IServiceCollection services)
         {
-            var conn = _configuration.GetConnectionString("ToolShedProducts");
-
+            var conn = Configuration.GetConnectionString("ToolShedProducts");
+            services.AddTransient<IIdentitySeeder, IdentitySeeder>();
             // Change the format of the routing Urls
             services.Configure<RouteOptions>(options => options.LowercaseUrls = true);
 
@@ -39,7 +40,11 @@ namespace ToolShed.Web
             services.AddSingleton<IHttpContextAccessor, HttpContextAccessor>();
 
             services.AddDbContext<ApplicationDbContext>(options => options.UseSqlServer(conn));
+
+            services.AddIdentity<IdentityUser, IdentityRole>().AddEntityFrameworkStores<ApplicationDbContext>().AddDefaultTokenProviders();
+            
             services.AddTransient<IProductRepository, ProductRepository>();
+            
 
             // To add to session
             services.AddMemoryCache();
@@ -58,18 +63,23 @@ namespace ToolShed.Web
 
         }
 
-        public void Configure(IApplicationBuilder app, IHostingEnvironment env, ApplicationDbContext ctx)
+        public void Configure(IApplicationBuilder app, IHostingEnvironment env, ApplicationDbContext ctx, IIdentitySeeder identitySeeder)
         {
             if (env.IsDevelopment())
             {
                 app.UseDeveloperExceptionPage();
                 app.UseStatusCodePages();
             }
-
+            else
+            {
+                app.UseExceptionHandler("/error.html");
+            }
             //app.UseAuthentication();
             app.UseStaticFiles();
             //Use session
             app.UseSession();
+
+            app.UseAuthentication();
 
             app.UseMvc(routes =>
             {
@@ -106,7 +116,7 @@ namespace ToolShed.Web
 
             });
 
-
+            identitySeeder.CreateAdminAccountIfEmpty();
 
             Seed.FillIfEmpty(ctx);
 

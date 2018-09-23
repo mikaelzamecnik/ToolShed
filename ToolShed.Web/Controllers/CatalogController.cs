@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using ToolShed.Web.Infrastructure;
 using ToolShed.Web.Models;
@@ -10,6 +11,7 @@ using ToolShed.Web.ViewModels;
 
 namespace ToolShed.Web.Controllers
 {
+    [Authorize]
     public class CatalogController : Controller
     {
 

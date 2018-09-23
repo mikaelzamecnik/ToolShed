@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using ToolShed.Web.Models;
 using ToolShed.Web.Repositories;
@@ -51,12 +52,14 @@ namespace ToolShed.Web.Controllers
             cart.EmptyCart();
             return View();
         }
+        [Authorize]
         public IActionResult List()
         {
             return View(orderRepo.Orders.Where(x => !x.Shipped));
         }
 
         [HttpPost]
+        [Authorize]
         public IActionResult MarkAsShipped(int orderId)
         {
             Order order = orderRepo.Orders.FirstOrDefault(x => x.Id == orderId);

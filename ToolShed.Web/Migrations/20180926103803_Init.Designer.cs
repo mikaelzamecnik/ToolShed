@@ -10,8 +10,8 @@ using ToolShed.Web.DataAccess;
 namespace ToolShed.Web.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    [Migration("20180923132620_Identity")]
-    partial class Identity
+    [Migration("20180926103803_Init")]
+    partial class Init
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {

@@ -18,53 +18,69 @@ namespace ToolShed.Web
 {
     public class Startup
     {
-
-
-        IConfiguration Configuration;
+        IConfiguration _configuration;
 
         public Startup(IConfiguration conf)
         {
-            Configuration = conf;
+            _configuration = conf;
         }
-
-
 
         public void ConfigureServices(IServiceCollection services)
         {
-            var conn = Configuration.GetConnectionString("ToolShedProducts");
+            var conn = _configuration.GetConnectionString("ToolShedProducts");
+
+            services.AddDbContext<ApplicationDbContext>(options => options.UseSqlServer(conn));
+
+            services.AddTransient<IProductRepository, ProductRepository>();
+
+
+            //services.AddTransient<IPasswordValidator<IdentityUser>, CorporatePasswordValidator>();
+
+            //services.AddTransient<IUserValidator<IdentityUser>, CorporateUserValidator>();
+
+            //services.AddAutoMapper();
+
+
+            services.AddIdentity<IdentityUser, IdentityRole>().
+                AddEntityFrameworkStores<ApplicationDbContext>().
+                AddDefaultTokenProviders();
+
             services.AddTransient<IIdentitySeeder, IdentitySeeder>();
-            // Change the format of the routing Urls
+
+
+
+            services.Configure<IdentityOptions>(options =>
+            {
+                options.Password.RequireDigit = false;
+                options.Password.RequireLowercase = false;
+                options.Password.RequireNonAlphanumeric = false;
+                options.Password.RequireUppercase = false;
+                options.Password.RequiredLength = 3;
+            });
+
+
+
+
             services.Configure<RouteOptions>(options => options.LowercaseUrls = true);
 
             services.AddScoped(f => CartSession.GetCart(f));
             services.AddSingleton<IHttpContextAccessor, HttpContextAccessor>();
 
-            services.AddDbContext<ApplicationDbContext>(options => options.UseSqlServer(conn));
+            services.AddTransient<IOrderRepository, OrderRepository>();
 
-            services.AddIdentity<IdentityUser, IdentityRole>().AddEntityFrameworkStores<ApplicationDbContext>().AddDefaultTokenProviders();
-            
-            services.AddTransient<IProductRepository, ProductRepository>();
-            
-
-            // To add to session
             services.AddMemoryCache();
             services.AddSession(options =>
             {
                 options.Cookie.Name = ".ToolShed.Cart.Session";
                 options.IdleTimeout = TimeSpan.FromDays(2);
-
             });
 
-
-            // Adding OrderRepository
-            services.AddTransient<IOrderRepository, OrderRepository>();
-            // Make Core App work with Mvc
             services.AddMvc();
-
         }
-
         public void Configure(IApplicationBuilder app, IHostingEnvironment env, ApplicationDbContext ctx, IIdentitySeeder identitySeeder)
         {
+
+
             if (env.IsDevelopment())
             {
                 app.UseDeveloperExceptionPage();
@@ -74,53 +90,51 @@ namespace ToolShed.Web
             {
                 app.UseExceptionHandler("/error.html");
             }
-            //app.UseAuthentication();
+
             app.UseStaticFiles();
-            //Use session
-            app.UseSession();
 
             app.UseAuthentication();
+            app.UseSession();
 
             app.UseMvc(routes =>
             {
+                // -> /produkter/skruvdragare/sida/1
                 routes.MapRoute(
-
-                   name: null,
-                   template: "produkter/{selectedCategory}/sida/{page:int}",
-                   defaults: new { Controller = "Product", action = "List" });
-
-                routes.MapRoute(
-
-                   name: null,
-                   template: "produkter/sida/{page:int}",
-                   defaults: new { Controller = "Product", action = "List", page =1 });
-
-                routes.MapRoute(
-
-                   name: null,
-                   template: "produkter/{selectedCategory}",
-                   defaults: new { Controller = "Product", action = "List", page = 1 });
-
-                routes.MapRoute(
-
-                   name: null,
-                   template: "",
-                   defaults: new { Controller = "Product", action = "List", page = 1 });
-
-                routes.MapRoute(
-
                     name: null,
-                    template: "{controller}/{action}/{id?}");
+                    template: "produkter/{selectedCategory}/sida/{page:int}",
+                    defaults: new { controller = "Product", action = "List" }
+                );
 
+                // -> /produkter/sida/2
+                routes.MapRoute(
+                    name: null,
+                    template: "produkter/sida/{page:int}",
+                    defaults: new { controller = "Product", action = "List", page = 1 }
+                );
 
+                // -> /produkter/skruvdragare
+                routes.MapRoute(
+                    name: null,
+                    template: "produkter/{selectedCategory}",
+                    defaults: new { controller = "Product", action = "List", page = 1 }
+                );
+                // -> /
+                routes.MapRoute(
+                    name: null,
+                    template: "",
+                    //defaults: new { controller = "Product", action = "List", page = 1 }
+                    defaults: new { controller = "Home", action = "Index", page = 1 }
+                );
 
+                routes.MapRoute(
+                    name: null,
+                    template: "{controller=Product}/{action=List}/{id?}"
+                );
             });
 
             identitySeeder.CreateAdminAccountIfEmpty();
 
             Seed.FillIfEmpty(ctx);
-
-
         }
     }
 }

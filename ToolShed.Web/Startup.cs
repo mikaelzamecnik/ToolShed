@@ -32,10 +32,6 @@ namespace ToolShed.Web
         public void ConfigureServices(IServiceCollection services)
         {
             var conn = Configuration.GetConnectionString("ToolShedProducts");
-            services.AddDbContext<ApplicationDbContext>(options => options.UseSqlServer(conn));
-
-            services.AddIdentity<IdentityUser, IdentityRole>().AddEntityFrameworkStores<ApplicationDbContext>().AddDefaultTokenProviders();
-
             services.AddTransient<IIdentitySeeder, IdentitySeeder>();
             // Change the format of the routing Urls
             services.Configure<RouteOptions>(options => options.LowercaseUrls = true);
@@ -43,10 +39,12 @@ namespace ToolShed.Web
             services.AddScoped(f => CartSession.GetCart(f));
             services.AddSingleton<IHttpContextAccessor, HttpContextAccessor>();
 
+            services.AddDbContext<ApplicationDbContext>(options => options.UseSqlServer(conn));
 
-
+            services.AddIdentity<IdentityUser, IdentityRole>().AddEntityFrameworkStores<ApplicationDbContext>().AddDefaultTokenProviders();
+            
             services.AddTransient<IProductRepository, ProductRepository>();
-
+            
 
             // To add to session
             services.AddMemoryCache();
@@ -65,7 +63,7 @@ namespace ToolShed.Web
 
         }
 
-        public void Configure(IApplicationBuilder app, IHostingEnvironment env, ApplicationDbContext ctx, IIdentitySeeder IdentitySeeder)
+        public void Configure(IApplicationBuilder app, IHostingEnvironment env, ApplicationDbContext ctx, IIdentitySeeder identitySeeder)
         {
             if (env.IsDevelopment())
             {
@@ -78,11 +76,10 @@ namespace ToolShed.Web
             }
             //app.UseAuthentication();
             app.UseStaticFiles();
-            app.UseAuthentication();
             //Use session
             app.UseSession();
 
-
+            app.UseAuthentication();
 
             app.UseMvc(routes =>
             {
@@ -119,7 +116,7 @@ namespace ToolShed.Web
 
             });
 
-            IdentitySeeder.CreateAdminAccountIfEmpty();
+            identitySeeder.CreateAdminAccountIfEmpty();
 
             Seed.FillIfEmpty(ctx);
 

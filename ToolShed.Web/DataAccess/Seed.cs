@@ -19,7 +19,7 @@ namespace ToolShed.Web.DataAccess
                 ctx.SaveChanges();
 
             }
-
+            
 
             if (!ctx.Products.Any())
             {
@@ -39,7 +39,7 @@ namespace ToolShed.Web.DataAccess
                 ctx.SaveChanges();
 
             }
-
+            
         }
 
 

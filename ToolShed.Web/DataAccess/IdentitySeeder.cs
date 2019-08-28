@@ -7,9 +7,9 @@ using Microsoft.AspNetCore.Identity;
 
 namespace ToolShed.Web.DataAccess
 {
-    public class IdentitySeeder:IIdentitySeeder
+    public class IdentitySeeder : IIdentitySeeder
     {
-        private const string _admin = "admin";
+        private const string _admin = "admin@example.com";
         private const string _password = "buggeroff";
 
         private readonly ApplicationDbContext _context;
@@ -23,30 +23,32 @@ namespace ToolShed.Web.DataAccess
 
         public async Task<bool> CreateAdminAccountIfEmpty()
         {
-
-
-            if (!_context.Users.Any(u => u.UserName == _admin))
+            try
             {
-                var user = new IdentityUser
+                if (!_context.Users.Any(u => u.UserName == _admin))
                 {
-                    UserName = _admin,
-                    Email = "admin@example.com",
-                    EmailConfirmed = true
-                };
+                    var user = new IdentityUser
+                    {
+                        UserName = _admin,
+                        Email = "admin@example.com",
+                        EmailConfirmed = true
+                    };
 
-                var result = await _userManager.CreateAsync(user, _password);
-                var test = result.Succeeded;
+                    var result = await _userManager.CreateAsync(user, _password);
+                    var test = result.Succeeded;
+                }
+
+            }
+            catch (Exception ex )
+            {
+
+                throw;
             }
 
-            //if(!_context.Users.Any(u => u.UserName == _admin))
-            //{
-            //    await _userManager.CreateAsync(new IdentityUser {
-            //        UserName = _admin,
-            //        Email = "admin@example.com",
-            //        EmailConfirmed = true
-            //    }, _password);
-            //}
-            //TODO Seed admin role and add_admin to this role
+
+
+            //TODO: Seed admin role and add _admin to this rolesdsdf
+
             return true;
         }
     }

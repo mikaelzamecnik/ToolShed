@@ -20,18 +20,18 @@ namespace ToolShed.Web
     {
 
 
-        IConfiguration Configuration;
+        IConfiguration _configuration;
 
         public Startup(IConfiguration conf)
         {
-            Configuration = conf;
+            _configuration = conf;
         }
 
 
 
         public void ConfigureServices(IServiceCollection services)
         {
-            var conn = Configuration.GetConnectionString("ToolShedProducts");
+            var conn = _configuration.GetConnectionString("ToolShedProducts");
             services.AddTransient<IIdentitySeeder, IdentitySeeder>();
             // Change the format of the routing Urls
             services.Configure<RouteOptions>(options => options.LowercaseUrls = true);

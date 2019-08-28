@@ -23,14 +23,29 @@ namespace ToolShed.Web.DataAccess
 
         public async Task<bool> CreateAdminAccountIfEmpty()
         {
-            if(!_context.Users.Any(u => u.UserName == _admin))
+
+
+            if (!_context.Users.Any(u => u.UserName == _admin))
             {
-                await _userManager.CreateAsync(new IdentityUser {
+                var user = new IdentityUser
+                {
                     UserName = _admin,
                     Email = "admin@example.com",
                     EmailConfirmed = true
-                }, _password);
+                };
+
+                var result = await _userManager.CreateAsync(user, _password);
+                var test = result.Succeeded;
             }
+
+            //if(!_context.Users.Any(u => u.UserName == _admin))
+            //{
+            //    await _userManager.CreateAsync(new IdentityUser {
+            //        UserName = _admin,
+            //        Email = "admin@example.com",
+            //        EmailConfirmed = true
+            //    }, _password);
+            //}
             //TODO Seed admin role and add_admin to this role
             return true;
         }
